@@ -127,4 +127,5 @@ else
     echo "current ip speed is best!"
 fi
 
+echo ""
 echo "------------end------------"
