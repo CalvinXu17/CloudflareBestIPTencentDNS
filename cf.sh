@@ -56,7 +56,7 @@ DOMAIN="${remaining#*.}.$DOMAIN"
 
 function speed_test() {
     local ipfile=$1
-    local command="./CloudflareST_$(uname -m) -url ${TEST_URL} -o ${RESULT_FILE} -f ${ipfile}"
+    local command="./CloudflareST_$(uname -m) -sl 1 -url ${TEST_URL} -o ${RESULT_FILE} -f ${ipfile}"
     local ip=""
     local speed=""
     local i=0
@@ -116,7 +116,7 @@ fi
 
 echo old $OLD_IP ping ${OLD_PING}ms ${OLD_SPEED}MB/s
 echo new $NEW_IP ping ${NEW_SPEED}ms ${NEW_SPEED}MB/s
-if [[ $UPDATE == "1" && $(echo "$NEW_PING < $OLD_PING" | bc) && $(echo "$NEW_SPEED > $OLD_SPEED" | bc) ]]; then
+if [[ $UPDATE == "1" && $(echo "$NEW_PING < $OLD_PING" | bc) -eq 1 && $(echo "$NEW_SPEED > $OLD_SPEED" | bc) -eq 1 ]]; then
     tencent_update_record "$API_ID" "$API_KEY" "$DOMAIN" "$SUB_DOMAIN" "$recordid" "$NEW_IP"
 else
     echo "current ip speed is best!"
