@@ -6,5 +6,16 @@
 # Usage
 
 ```shell
-./test.sh -i "API_ID" -k "API_KEY" -h "HOST" -u 1
+./cf.sh -i "API_ID" -k "API_KEY" -h "HOST" -u 1
 ```
+
+## Add proxycf.sh
+
+Find the best ip to proxy cloudflare website.
+
+Cloudflare worker cannot visit websites based on cloudflare, so the worker needs other cdn to proxy these websites.
+
+```shell
+./proxycf.sh -i "API_ID" -k "API_KEY" -h "HOST" -u 1
+```
+

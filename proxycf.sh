@@ -11,7 +11,7 @@ NEW_SPEED=""
 TEST_URL="https://speed.cloudflare.com/__down?measId=1361084997055349&bytes=209715200"
 RESULT_FILE="result.csv"
 TEST_TXT="test.txt"
-IPV4_TXT="ip.txt"
+IPV4_TXT="proxy.txt"
 
 HOST_NAME=""
 API_ID=""
@@ -93,10 +93,23 @@ speed_test $TEST_TXT
 OLD_PING=$(sed -n "2,1p" $RESULT_FILE | awk -F, '{print $(NF-1)}')
 OLD_SPEED=$(sed -n "2,1p" $RESULT_FILE | awk -F, '{print $NF}')
 
+wget -O txt.zip https://zip.baipiao.eu.org
+tempdir=$(mktemp -d)
+unzip txt.zip '*.txt' -d "${tempdir}"
+for txtfile in "${tempdir}"/*.txt; do
+    while IFS= read -r line; do
+        echo "${line}/32"
+    done < "${txtfile}"
+done > $IPV4_TXT
+rm -r "${tempdir}"
+rm -f txt.zip
+
 speed_test $IPV4_TXT
 NEW_IP=$(sed -n "2,1p" $RESULT_FILE | awk -F, '{print $1}')
 NEW_PING=$(sed -n "2,1p" $RESULT_FILE | awk -F, '{print $(NF-1)}')
 NEW_SPEED=$(sed -n "2,1p" $RESULT_FILE | awk -F, '{print $NF}')
+
+rm -f $TEST_TXT $IPV4_TXT $RESULT_FILE
 
 if [[ $OLD_PING == "" ]]; then
     OLD_PING=1000
