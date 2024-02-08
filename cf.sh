@@ -115,7 +115,12 @@ if [[ $NEW_SPEED == "" ]]; then
 fi
 
 echo old $OLD_IP ping ${OLD_PING}ms ${OLD_SPEED}MB/s
-echo new $NEW_IP ping ${NEW_SPEED}ms ${NEW_SPEED}MB/s
+echo new $NEW_IP ping ${NEW_PING}ms ${NEW_SPEED}MB/s
+
+if [[ $(echo "$OLD_SPEED == 0" | bc) -eq 1 ]]; then
+    OLD_PING=1000
+fi
+
 if [[ $UPDATE == "1" && $(echo "$NEW_PING < $OLD_PING" | bc) -eq 1 && $(echo "$NEW_SPEED > $OLD_SPEED" | bc) -eq 1 ]]; then
     tencent_update_record "$API_ID" "$API_KEY" "$DOMAIN" "$SUB_DOMAIN" "$recordid" "$NEW_IP"
 else
